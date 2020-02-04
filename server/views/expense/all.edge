@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Birth</th>
+                <th>Phone</th>
+            </tr>
+        </thead>
+        <tbody> 
+            @each(expense in expense)
+            <tr>
+                <td>{{expense.price}}</td>
+                <td>{{expense.description}}</td>
+                <td>
+                    
+                 <form action="change/{{expense._id}}" method="GET">
+                    <input type="submit" value="Edit" />
+                </form>
+            </td>
+            <td>
+                <form action="delete/{{expense._id}}" method="GET">
+                    <input type="submit" value="Delete" />
+                </form>
+                </td>
+            </tr>
+            @endeach
+        </tbody>
+    </table>
+</body>
+</html>

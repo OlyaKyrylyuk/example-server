@@ -93,12 +93,79 @@ router.get('/categories', function(req, res) {
 
   Category.find({})
     .then((result) => {
-      return res.send(result)
+      return res.render('category/all',{result})
     })
     .catch((e) => {
       console.log(e)
       return res.send(e.message)
     })
 })
+router.get('/categories/create', function(req, res) {
+  res.render('category/create')
+})
+router.post('/categories/create', function(req, res) {
+  const {name} = req.body
 
+  const category = new Category({name })
+  category
+    .save()
+    .then((result) => {
+    Category.find({})
+    .then((result) => {
+      return res.render('category/all',{result})
+    })
+    .catch((e) => {
+      console.log(e)
+      return res.send(e.message)
+    })
+    })
+    .catch(() => {
+      res.redirect('/categories/create', { name })
+    })
+})
+router.get('/categories/change/:id', function(req, res) {
+  const {id} = req.params
+  res.render('category/change',{id})
+})
+router.post('/categories/change/:id', function(req, res) {
+  console.log("reading")
+  
+    Category.findByIdAndUpdate(req.params.id, {
+        name: req.body.name || "Untitled Category",
+    }, {new: true})
+    .then(
+      res.redirect('/categories')
+    )
+    .catch(err => {
+      console.log(err)
+    })
+      
+    
+})
+
+router.get('/expenses/create', function(req, res) {
+  
+  res.render('expense/create')
+})
+router.post('/expenses/create', function(req, res) {
+  const {name} = req.body
+
+  const category = new Category({name })
+  category
+    .save()
+    .then((result) => {
+      res.redirect('/categories')
+    })
+    .catch(() => {
+      res.redirect('/categories/create', { name })
+    })
+})
+router.get("/categories/delete/:id", function(req, res) {
+  Category.findOneAndRemove({ _id: req.params.id }, err => {
+    if (err) {
+      return res.redirect("/categories");
+    }
+    return res.redirect("/categories");
+  });
+});
 module.exports = router
